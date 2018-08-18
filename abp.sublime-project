@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"folder_exclude_patterns": ["node_modules", "ios"]
+		}
+	],
+	"settings": {
+		"tab_size": 2,
+		"translate_tabs_to_spaces": true
+	}
+}
+  

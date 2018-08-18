@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "158764856080",
+    "firebase_url": "https://abp-blood-bank.firebaseio.com",
+    "project_id": "abp-blood-bank",
+    "storage_bucket": "abp-blood-bank.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158764856080:android:4a3329ce282f0fb9",
+        "android_client_info": {
+          "package_name": "com.abpbloodbank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158764856080-45l00vii4910v2nc8458k7gqcb424t4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abpbloodbank",
+            "certificate_hash": "33984dea6fb5eba48c2c095e78547853d157b88b"
+          }
+        },
+        {
+          "client_id": "158764856080-meki33c1n80eeqjsk0i24hhpk3rap7ka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACjMPAPQ4yhDyJ7xOx-NNhMvXgFIAp0oc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "158764856080-meki33c1n80eeqjsk0i24hhpk3rap7ka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
