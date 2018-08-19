@@ -51,7 +51,8 @@ const facebookLogin = async () => {
     // login with credential
     const currentUser = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
 
-    console.info(JSON.stringify(currentUser.user.toJSON()))
+    const data = currentUser.user.toJSON();
+    firebase.database().ref('/donors').set({name: 'Sakib', phone: '01745954178'});
   } catch (e) {
     console.error(e);
   }
