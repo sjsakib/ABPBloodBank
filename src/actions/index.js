@@ -1,8 +1,8 @@
-export const getReady = (currentUser, userList) => {
+export const getReady = (currentUser, users) => {
   return {
     type: 'GET_READY',
     currentUser,
-    userList
+    users
   };
 };
 

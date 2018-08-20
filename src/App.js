@@ -49,12 +49,12 @@ class App extends React.Component {
 
   async load() {
     const currentUser = JSON.parse(await AsyncStorage.getItem('currentUser')) || { uid: null, admin: false };
-    const userList = (await firebase
+    const users = (await firebase
       .database()
       .ref('/users')
       .once('value')).val();
 
-    this.props.dispatch(getReady(currentUser, userList));
+    this.props.dispatch(getReady(currentUser, users));
   }
 
   async authenticate() {
