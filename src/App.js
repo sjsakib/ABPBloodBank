@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ActivityIndicator, AsyncStorage } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import firebase from 'react-native-firebase';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
 import { getReady } from './actions';
 import Profile from './screens/Profile';
@@ -43,6 +44,7 @@ const MainNavigator = createBottomTabNavigator(
 class App extends React.Component {
   componentDidMount() {
     this.load();
+    // this.authenticate();
   }
 
   async load() {
@@ -53,6 +55,12 @@ class App extends React.Component {
       .once('value')).val();
 
     this.props.dispatch(getReady(currentUser, userList));
+  }
+
+  async authenticate() {
+    const result = LoginManager.log
+    const accessToken = AccessToken.getCurrentAccessToken();
+    console.log(accessToken);
   }
 
   render() {

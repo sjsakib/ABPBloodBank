@@ -5,3 +5,10 @@ export const getReady = (currentUser, userList) => {
     userList
   };
 };
+
+export const updateCurrentUser = currentUser => {
+  return {
+    type: 'UPDATE_CURRENT_USER',
+    currentUser,
+  };
+};
