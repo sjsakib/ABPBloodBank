@@ -11,7 +11,11 @@ const Profile = ({ currentUser }) => {
   if (!currentUser.uid) {
     return <LoginContainer />;
   }
-  return createStackNavigator({ ProfileInfo: { screen: () => <ProfileInfo uid={currentUser.uid} /> } });
+  const ProfileNavigator = createStackNavigator({
+    ProfileInfo: { screen: ({ navigation }) => <ProfileInfo uid={currentUser.uid} navigation={navigation} /> },
+    EditProfile: { screen: ({ navigation }) => <EditProfile uid={currentUser.uid} navigation={navigation} /> }
+  });
+  return <ProfileNavigator />;
 };
 
 export default connect(state => ({ currentUser: state.currentUser }))(Profile);
