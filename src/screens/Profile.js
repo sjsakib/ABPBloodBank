@@ -11,10 +11,21 @@ const Profile = ({ currentUser }) => {
   if (!currentUser.uid) {
     return <LoginContainer />;
   }
-  const ProfileNavigator = createStackNavigator({
-    ProfileInfo: { screen: ({ navigation }) => <ProfileInfo uid={currentUser.uid} navigation={navigation} /> },
-    EditProfile: { screen: ({ navigation }) => <EditProfile uid={currentUser.uid} navigation={navigation} /> }
-  });
+  const ProfileNavigator = createStackNavigator(
+    {
+      ProfileInfo: {
+        screen: ({ navigation }) => (
+          <ProfileInfo uid={currentUser.uid} navigation={navigation} />
+        )
+      },
+      EditProfile: {
+        screen: ({ navigation }) => (
+          <EditProfile uid={currentUser.uid} navigation={navigation} />
+        )
+      }
+    },
+    { headerMode: 'none' }
+  );
   return <ProfileNavigator />;
 };
 

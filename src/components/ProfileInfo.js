@@ -1,27 +1,94 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet } from 'react-native';
-import { Text, Avatar, Button, Icon } from 'react-native-elements';
+import { View, StyleSheet, Text, Linking } from 'react-native';
+import { Avatar, Button, Icon } from 'react-native-elements';
+import dateString from '../utilities/dateString';
 
-const ProfileInfo = ({ fbId, name, group, navigation }) => {
+const ProfileInfo = props => {
+  const {
+    fbId,
+    fbUsername,
+    name,
+    group,
+    navigation,
+    phone,
+    lastDonation,
+    address
+  } = props;
+  console.log(props);
+  console.log(fbId);
   return (
     <View style={styles.container}>
-      <Avatar rounded size="large" source={fbId && { uri: `https://graph.facebook.com/${fbId}/picture?type=large` }} />
-      <Text>{name}</Text>
-      <View style={styles.row}>
-        <Icon name="drop" type="entypo" color="tomato" />
-        <Text>{group}</Text>
+      <View style={styles.top}>
+        <View style={styles.topLeft}>
+          <Avatar
+            rounded
+            xlarge
+            title={name[0]}
+            source={
+              !isNaN(fbId) && {
+                uri: `https://graph.facebook.com/${fbId}/picture?type=large`
+              }
+            }
+          />
+        </View>
+        <View style={styles.topRight}>
+          <Text style={styles.nameText}>{name}</Text>
+        </View>
+      </View>
+      <View style={styles.bottom}>
+        <View style={styles.row}>
+          <Icon raised color="orange" name="drop" type="entypo" />
+          <Text style={styles.rowText}>{group}</Text>
+        </View>
+        <View style={styles.row}>
+          <Icon
+            raised
+            color="orange"
+            name="phone"
+            type="entypo"
+            onPress={() => Linking.openURL(`tel:${phone}`)}
+          />
+          <Text style={styles.rowText}>{phone}</Text>
+        </View>
+        <View style={styles.row}>
+          <Icon raised color="orange" name="calendar" type="entypo" />
+          <Text style={styles.rowText}>
+            {lastDonation
+              ? dateString(new Date(lastDonation), 'long')
+              : 'No record'}
+          </Text>
+        </View>
+        <View style={styles.row}>
+          <Icon raised color="orange" name="location" type="entypo" />
+          <Text style={styles.rowText}>{address}</Text>
+        </View>
+        {fbUsername && (
+          <View style={styles.fb}>
+            <Icon
+              raised
+              color="orange"
+              name="facebook-f"
+              type="font-awesome"
+              onPress={() =>
+                Linking.openURL(`https://facebook.com/${fbUsername}`)
+              }
+            />
+            <Icon
+              raised
+              color="orange"
+              name="facebook-messenger"
+              type="material-community"
+              onPress={() => Linking.openURL(`https://m.me/${fbUsername}`)}
+            />
+          </View>
+        )}
       </View>
       <Button
-        icon={<Icon type="entypo" color="white" size={15} name="edit" />}
-        buttonStyle={{
-          backgroundColor: 'rgba(92, 99,216, 1)',
-          width: 300,
-          height: 45,
-          borderRadius: 5
-        }}
+        leftIcon={{ name: 'edit' }}
+        buttonStyle={styles.editButton}
         rounded
-        title="Edit Profile"
+        title="EDIT"
         onPress={() => navigation.navigate('EditProfile')}
       />
     </View>
@@ -31,12 +98,48 @@ const ProfileInfo = ({ fbId, name, group, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'white'
+  },
+  top: {
+    flexDirection: 'row'
+  },
+  topRight: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    padding: 20
+    marginLeft: 20
+  },
+  nameText: {
+    fontFamily: 'sans-serif-light',
+    fontSize: 32,
+    textAlign: 'center'
+  },
+  bottom: {
+    marginTop: 30
   },
   row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  rowText: {
+    fontFamily: 'sans-serif-light',
+    fontSize: 20,
+    marginLeft: 20
+  },
+  fb: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20
+  },
+  editButton: {
+    // backgroundColor: "orange",
+    width: 120,
+    alignSelf: 'center'
   }
 });
 
-export default connect((state, ownProps) => state.users[ownProps.uid])(ProfileInfo);
+export default connect((state, ownProps) => state.users[ownProps.uid])(
+  ProfileInfo
+);
