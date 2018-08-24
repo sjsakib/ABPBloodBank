@@ -5,7 +5,9 @@ import {
   ScrollView,
   StyleSheet,
   Picker,
-  DatePickerAndroid
+  DatePickerAndroid,
+  Modal,
+  ActivityIndicator
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import {
@@ -81,8 +83,8 @@ class EditProfile extends React.Component {
     } else {
       userRef = firebase.database().ref('/users/' + this.props.uid);
     }
-    console.log(address);
-    userRef.set({
+    this.setState({ saving: true });
+    await userRef.set({
       name,
       phone,
       group,
@@ -109,10 +111,24 @@ class EditProfile extends React.Component {
     return (
       <View style={styles.container}>
         <Header
-          innerContainerStyles={{alignItems: 'center'}}
+          innerContainerStyles={{ alignItems: 'center' }}
           backgroundColor="white"
-          leftComponent={<Icon color="orange" raised name="close" onPress={() => this.props.navigation.goBack()}/>}
-          rightComponent={<Icon color="orange" raised name="check" onPress={() => this.save()}/>}
+          leftComponent={
+            <Icon
+              color="orange"
+              raised
+              name="close"
+              onPress={() => this.props.navigation.goBack()}
+            />
+          }
+          rightComponent={
+            <Icon
+              color="orange"
+              raised
+              name="check"
+              onPress={() => this.save()}
+            />
+          }
         />
         <View style={styles.row}>
           <View style={styles.cellLeft}>
@@ -180,6 +196,15 @@ class EditProfile extends React.Component {
           }
           onFocus={() => this.selectDate()}
         />
+        <Modal
+          transparent={true}
+          visible={this.state.saving === true}
+          onRequestClose={() => console.log('trying to close')}>
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator size="large" />
+          </View>
+        </Modal>
       </View>
     );
   }
