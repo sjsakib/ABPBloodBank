@@ -9,7 +9,7 @@ export const getReady = (currentUser, users) => {
 export const updateCurrentUser = currentUser => {
   return {
     type: 'UPDATE_CURRENT_USER',
-    currentUser,
+    currentUser
   };
 };
 
@@ -17,6 +17,14 @@ export const updateUserInfo = (key, userInfo) => {
   return {
     type: 'UPDATE_USER_INFO',
     key,
-    userInfo,
+    userInfo
+  };
+};
+
+export const updateFilters = (key, val) => {
+  return {
+    type: 'UPDATE_FILTERS',
+    key,
+    val
   };
 };
