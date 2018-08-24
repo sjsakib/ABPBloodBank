@@ -12,3 +12,11 @@ export const updateCurrentUser = currentUser => {
     currentUser,
   };
 };
+
+export const updateUserInfo = (key, userInfo) => {
+  return {
+    type: 'UPDATE_USER_INFO',
+    key,
+    userInfo,
+  };
+};

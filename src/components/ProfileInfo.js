@@ -3,20 +3,20 @@ import { connect } from 'react-redux';
 import { View, StyleSheet, Text, Linking } from 'react-native';
 import { Avatar, Button, Icon } from 'react-native-elements';
 import dateString from '../utilities/dateString';
+import LoadingIndicator from './LoadingIndicator';
 
 const ProfileInfo = props => {
+  if (!props.userInfo) return <LoadingIndicator />;
   const {
     fbId,
     fbUsername,
     name,
     group,
-    navigation,
     phone,
     lastDonation,
     address
-  } = props;
-  console.log(props);
-  console.log(fbId);
+  } = props.userInfo;
+  const navigation = props.navigation;
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -140,6 +140,6 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect((state, ownProps) => state.users[ownProps.uid])(
-  ProfileInfo
-);
+export default connect((state, ownProps) => ({
+  userInfo: state.users[ownProps.uid]
+}))(ProfileInfo);

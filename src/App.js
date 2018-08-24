@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from 'react-navigation';
 import firebase from 'react-native-firebase';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
-import { getReady } from './actions';
+import { getReady, updateCurrenUser, updateUserInfo } from './actions';
 import Profile from './screens/Profile';
 import Donors from './screens/Donors';
 import { Icon } from 'react-native-elements';
@@ -30,7 +30,9 @@ const MainNavigator = createBottomTabNavigator(
           iconName = 'user';
         }
 
-        return <Icon name={iconName} size={30} color={tintColor} type="entypo" />;
+        return (
+          <Icon name={iconName} size={30} color={tintColor} type="entypo" />
+        );
       }
     }),
     tabBarOptions: {
@@ -48,17 +50,40 @@ class App extends React.Component {
   }
 
   async load() {
-    const currentUser = JSON.parse(await AsyncStorage.getItem('currentUser')) || { uid: null, admin: false };
-    const users = (await firebase
-      .database()
-      .ref('/users')
-      .once('value')).val();
+    const dispatch = this.props.dispatch;
 
-    this.props.dispatch(getReady(currentUser, users));
+    // load current user from disk
+    const currentUser = JSON.parse(
+      await AsyncStorage.getItem('currentUser')
+    ) || { uid: null, admin: false };
+    dispatch(getReady(currentUser));
+
+    //start loading users
+    const usersRef = firebase.database().ref('/users');
+    usersRef.on('child_added', data => {
+      const info = data.val();
+      dispatch(updateUserInfo(data.key, info));
+      if (data.key === currentUser.uid && info.admin) {
+        dispatch(updateCurrenUser({ uid: data.key, amdin: true }));
+      }
+    });
+
+    usersRef.on('child_changed', data => {
+      const info = data.val();
+      dispatch(updateUserInfo(data.key, info));
+      if (data.key === currentUser.uid && info.admin) {
+        dispatch(updateCurrenUser({ uid: data.key, amdin: true }));
+      }
+    });
+
+    // if user signed in, refresh authentication
+    /*if (currentUser.uid) {
+      // const
+    }*/
   }
 
   async authenticate() {
-    const result = LoginManager.log
+    const result = LoginManager.log;
     const accessToken = AccessToken.getCurrentAccessToken();
     console.log(accessToken);
   }
@@ -66,7 +91,8 @@ class App extends React.Component {
   render() {
     if (!this.props.ready) {
       return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size="large" />
         </View>
       );

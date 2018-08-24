@@ -174,7 +174,7 @@ class EditProfile extends React.Component {
         <FormLabel>Facebook Profile</FormLabel>
         <FormInput
           underlineColorAndroid="grey"
-          defaultValue={`https://facebook.com/${this.state.fbUsername}`}
+          defaultValue={this.state.fbUsername}
           placeholder="Facebook username or profile link"
           onChangeText={text => this.setState({ fbUsername: text })}
         />
