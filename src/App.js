@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from 'react-navigation';
 import firebase from 'react-native-firebase';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
-import { getReady, updateCurrenUser, updateUserInfo } from './actions';
+import { getReady, updateCurrentUser, updateUserInfo } from './actions';
 import Profile from './screens/Profile';
 import Donors from './screens/Donors';
 import { Icon } from 'react-native-elements';
@@ -63,16 +63,16 @@ class App extends React.Component {
     usersRef.on('child_added', data => {
       const info = data.val();
       dispatch(updateUserInfo(data.key, info));
-      if (data.key === currentUser.uid && info.admin) {
-        dispatch(updateCurrenUser({ uid: data.key, amdin: true }));
+      if (data.key === currentUser.uid) {
+        dispatch(updateCurrentUser({ uid: data.key, admin: info.admin }));
       }
     });
 
     usersRef.on('child_changed', data => {
       const info = data.val();
       dispatch(updateUserInfo(data.key, info));
-      if (data.key === currentUser.uid && info.admin) {
-        dispatch(updateCurrenUser({ uid: data.key, amdin: true }));
+      if (data.key === currentUser.uid) {
+        dispatch(updateCurrentUser({ uid: data.key, admin: info.admin }));
       }
     });
 
