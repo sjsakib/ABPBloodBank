@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, ActivityIndicator, AsyncStorage } from 'react-native';
+import { View, ActivityIndicator, AsyncStorage, StatusBar } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import firebase from 'react-native-firebase';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
@@ -10,7 +11,7 @@ import Donors from './screens/Donors';
 import { Icon } from 'react-native-elements';
 
 // Create the main navigator
-const MainNavigator = createBottomTabNavigator(
+const MainNavigator = createMaterialBottomTabNavigator(
   {
     Donors: {
       screen: Donors
@@ -20,25 +21,29 @@ const MainNavigator = createBottomTabNavigator(
     }
   },
   {
+    shifting: true,
+    barStyle: { backgroundColor: '#FF9800' },
+    activeTintColor: '#d50000',
+    inactiveTintColor: '#e57373',
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName;
         if (routeName === 'Donors') {
-          iconName = 'drop';
+          iconName = 'water';
         } else if (routeName === 'Profile') {
-          iconName = 'user';
+          iconName = 'account';
         }
 
         return (
-          <Icon name={iconName} size={30} color={tintColor} type="entypo" />
+          <Icon
+            name={iconName}
+            color={tintColor}
+            type="material-community"
+          />
         );
       }
-    }),
-    tabBarOptions: {
-      activeTintColor: 'tomato',
-      inactiveTintColor: 'orange'
-    }
+    })
   }
 );
 
@@ -92,12 +97,22 @@ class App extends React.Component {
     if (!this.props.ready) {
       return (
         <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'white'
+          }}>
           <ActivityIndicator size="large" />
         </View>
       );
     }
-    return <MainNavigator />;
+    return (
+      <View style={{ flex: 1 }}>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
+        <MainNavigator />
+      </View>
+    );
   }
 }
 

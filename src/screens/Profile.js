@@ -7,7 +7,6 @@ import ProfileInfo from '../components/ProfileInfo';
 import EditProfile from '../components/EditProfile';
 
 const Profile = ({ currentUser }) => {
-  console.log(currentUser);
   if (!currentUser.uid) {
     return <LoginContainer />;
   }

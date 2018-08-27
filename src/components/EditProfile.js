@@ -7,7 +7,7 @@ import {
   Picker,
   DatePickerAndroid,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import {
@@ -83,7 +83,6 @@ class EditProfile extends React.Component {
       userRef = firebase.database().ref('/users/' + this.props.uid);
     }
     this.setState({ saving: true });
-    console.log('about to save.................')
     await userRef.set({
       name,
       phone,
@@ -94,7 +93,6 @@ class EditProfile extends React.Component {
       lastDonation,
       admin: this.props.admin
     });
-    console.log('savvinggggggggggg..............')
     this.props.navigation.navigate('ProfileInfo', { uid: this.props.uid });
   }
 
@@ -116,7 +114,7 @@ class EditProfile extends React.Component {
           backgroundColor="white"
           leftComponent={
             <Icon
-              color="orange"
+              color="#5e6977"
               raised
               name="close"
               onPress={() => this.props.navigation.goBack()}
@@ -124,7 +122,7 @@ class EditProfile extends React.Component {
           }
           rightComponent={
             <Icon
-              color="orange"
+              color="#5e6977"
               raised
               name="check"
               onPress={() => this.save()}
@@ -202,7 +200,7 @@ class EditProfile extends React.Component {
           visible={this.state.saving === true}
           onRequestClose={() => console.log('trying to close')}>
           <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, .5)'}}>
             <ActivityIndicator size="large" />
           </View>
         </Modal>

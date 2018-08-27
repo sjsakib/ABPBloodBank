@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text, Linking } from 'react-native';
-import { Avatar, Button, Icon } from 'react-native-elements';
+import { Avatar, Button, Icon, Header } from 'react-native-elements';
 import dateString from '../utilities/dateString';
 import LoadingIndicator from './LoadingIndicator';
 
@@ -17,7 +17,6 @@ const ProfileInfo = props => {
     address
   } = props.userInfo;
   const navigation = props.navigation;
-  console.log(props.currentUser);
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -39,13 +38,13 @@ const ProfileInfo = props => {
       </View>
       <View style={styles.bottom}>
         <View style={styles.row}>
-          <Icon raised color="orange" name="drop" type="entypo" />
+          <Icon raised color="#5e6977" name="drop" type="entypo" />
           <Text style={styles.rowText}>{group}</Text>
         </View>
         <View style={styles.row}>
           <Icon
             raised
-            color="orange"
+            color="#5e6977"
             name="phone"
             type="entypo"
             onPress={() => Linking.openURL(`tel:${phone}`)}
@@ -53,33 +52,33 @@ const ProfileInfo = props => {
           <Text style={styles.rowText}>{phone}</Text>
         </View>
         <View style={styles.row}>
-          <Icon raised color="orange" name="calendar" type="entypo" />
+          <Icon raised color="#5e6977" name="calendar" type="entypo" />
           <Text style={styles.rowText}>
             {lastDonation
               ? dateString(new Date(lastDonation), 'long')
               : 'No record!'}
           </Text>
         </View>
-        {address ?  (
+        {address ? (
           <View style={styles.row}>
-            <Icon raised color="orange" name="location" type="entypo" />
+            <Icon raised color="#5e6977" name="location" type="entypo" />
             <View style={styles.address}>
               <Text style={styles.rowText}>{address}</Text>
             </View>
           </View>
-        ) : null }
+        ) : null}
         {fbUsername ? (
           <View style={styles.fb}>
             <Icon
               raised
-              color="orange"
+              color="#5e6977"
               name="facebook-f"
               type="font-awesome"
               onPress={() => Linking.openURL(`https://fb.me/${fbUsername}`)}
             />
             <Icon
               raised
-              color="orange"
+              color="#5e6977"
               name="facebook-messenger"
               type="material-community"
               onPress={() => Linking.openURL(`https://m.me/${fbUsername}`)}
@@ -93,7 +92,7 @@ const ProfileInfo = props => {
             name="account-edit"
             raised
             type="material-community"
-            color="orange"
+            color="#5e6977"
             onPress={() =>
               navigation.navigate('EditProfile', { uid: props.uid })
             }
@@ -131,7 +130,7 @@ const styles = StyleSheet.create({
     // fontFamily: 'sans-serif-light',
     fontSize: 32,
     textAlign: 'center',
-    color: 'hsl(200, 15%, 55%)'
+    color: '#43484d'
   },
   bottom: {
     marginTop: 30
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     fontSize: 20,
     marginLeft: 20,
-    color: 'hsl(200, 18%, 62%)'
+    color: '#5e6977',
   },
   address: {
     flex: 1,

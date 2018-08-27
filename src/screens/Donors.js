@@ -10,9 +10,12 @@ const DonorsNavigator = createStackNavigator(
   {
     List: { screen: ListContainer },
     ProfileInfo: { screen: ProfileInfo },
-    EditProfile: { screen: EditProfile },
+    EditProfile: { screen: EditProfile }
   },
-  { headerMode: 'none' }
+  {
+    mode: 'modal',
+    headerMode: 'none'
+  }
 );
 
 export default class Donors extends React.Component {
