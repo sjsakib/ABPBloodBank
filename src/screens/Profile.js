@@ -14,14 +14,10 @@ const Profile = ({ currentUser }) => {
   const ProfileNavigator = createStackNavigator(
     {
       ProfileInfo: {
-        screen: ({ navigation }) => (
-          <ProfileInfo uid={currentUser.uid} navigation={navigation} />
-        )
+        screen: ProfileInfo
       },
       EditProfile: {
-        screen: ({ navigation }) => (
-          <EditProfile uid={currentUser.uid} navigation={navigation} />
-        )
+        screen: EditProfile
       }
     },
     { headerMode: 'none' }

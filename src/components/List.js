@@ -6,6 +6,7 @@ import dateString from '../utilities/dateString';
 const renderItem = ({ item }) => {
   return (
     <ListItem
+      containerStyle={{ borderBottomColor: '#e1e8ee' }}
       title={item.name}
       subtitle={[
         item.group,
@@ -15,16 +16,18 @@ const renderItem = ({ item }) => {
         .filter(x => x)
         .join('  |  ')}
       roundAvatar
-      avatar={item.fbId && {
-        uri: `https://graph.facebook.com/${item.fbId}/picture`,
-      }}
+      avatar={
+        item.fbId && {
+          uri: `https://graph.facebook.com/${item.fbId}/picture`
+        }
+      }
     />
   );
 };
 
 const List = props => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <SearchBar
         lightTheme
         clearIcon={{ name: 'close' }}
@@ -60,7 +63,29 @@ const List = props => {
       <FlatList
         data={props.users}
         keyExtractor={(item, index) => item.uid}
-        renderItem={renderItem}
+        renderItem={({ item }) => {
+          return (
+            <ListItem
+              containerStyle={{ borderBottomColor: '#e1e8ee' }}
+              title={item.name}
+              subtitle={[
+                item.group,
+                item.phone,
+                item.lastDonation &&
+                  dateString(new Date(item.lastDonation), 'short')
+              ]
+                .filter(x => x)
+                .join('  |  ')}
+              roundAvatar
+              avatar={
+                item.fbId && {
+                  uri: `https://graph.facebook.com/${item.fbId}/picture`
+                }
+              }
+              onPress={() => props.navigation.navigate('ProfileInfo', { uid: item.uid})}
+            />
+          );
+        }}
       />
     </View>
   );

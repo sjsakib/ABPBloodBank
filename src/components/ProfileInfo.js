@@ -17,20 +17,21 @@ const ProfileInfo = props => {
     address
   } = props.userInfo;
   const navigation = props.navigation;
+  console.log(props.currentUser);
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <View style={styles.topLeft}>
-          <Avatar
-            rounded
-            xlarge
-            title={name[0]}
-            source={
-              !isNaN(fbId) && {
+          {!isNaN(fbId) && (
+            <Avatar
+              rounded
+              xlarge
+              title={name[0]}
+              source={{
                 uri: `https://graph.facebook.com/${fbId}/picture?type=large`
-              }
-            }
-          />
+              }}
+            />
+          )}
         </View>
         <View style={styles.topRight}>
           <Text style={styles.nameText}>{name}</Text>
@@ -56,23 +57,25 @@ const ProfileInfo = props => {
           <Text style={styles.rowText}>
             {lastDonation
               ? dateString(new Date(lastDonation), 'long')
-              : 'No record'}
+              : 'No record!'}
           </Text>
         </View>
-        <View style={styles.row}>
-          <Icon raised color="orange" name="location" type="entypo" />
-          <Text style={styles.rowText}>{address}</Text>
-        </View>
-        {fbUsername && (
+        {address ?  (
+          <View style={styles.row}>
+            <Icon raised color="orange" name="location" type="entypo" />
+            <View style={styles.address}>
+              <Text style={styles.rowText}>{address}</Text>
+            </View>
+          </View>
+        ) : null }
+        {fbUsername ? (
           <View style={styles.fb}>
             <Icon
               raised
               color="orange"
               name="facebook-f"
               type="font-awesome"
-              onPress={() =>
-                Linking.openURL(`https://facebook.com/${fbUsername}`)
-              }
+              onPress={() => Linking.openURL(`https://fb.me/${fbUsername}`)}
             />
             <Icon
               raised
@@ -82,15 +85,28 @@ const ProfileInfo = props => {
               onPress={() => Linking.openURL(`https://m.me/${fbUsername}`)}
             />
           </View>
-        )}
+        ) : null}
       </View>
-      <Button
+      {(props.currentUser.uid === props.uid || props.currentUser.admin) && (
+        <View style={styles.editButton}>
+          <Icon
+            name="account-edit"
+            raised
+            type="material-community"
+            color="orange"
+            onPress={() =>
+              navigation.navigate('EditProfile', { uid: props.uid })
+            }
+          />
+        </View>
+      )}
+      {/*<Button
         leftIcon={{ name: 'edit' }}
         buttonStyle={styles.editButton}
         rounded
         title="EDIT"
         onPress={() => navigation.navigate('EditProfile')}
-      />
+      />*/}
     </View>
   );
 };
@@ -112,9 +128,10 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
   nameText: {
-    fontFamily: 'sans-serif-light',
+    // fontFamily: 'sans-serif-light',
     fontSize: 32,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'hsl(200, 15%, 55%)'
   },
   bottom: {
     marginTop: 30
@@ -124,22 +141,33 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   rowText: {
-    fontFamily: 'sans-serif-light',
+    // fontFamily: 'sans-serif-light',
+    flexWrap: 'wrap',
     fontSize: 20,
-    marginLeft: 20
+    marginLeft: 20,
+    color: 'hsl(200, 18%, 62%)'
+  },
+  address: {
+    flex: 1,
+    flexDirection: 'row'
   },
   fb: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20
+    justifyContent: 'center'
+    // marginBottom: 20
   },
   editButton: {
-    // backgroundColor: "orange",
-    width: 120,
+    // backgroundColor: 'hsl(200, 18%, 62%)',
+    // width: 100,
     alignSelf: 'center'
   }
 });
 
-export default connect((state, ownProps) => ({
-  userInfo: state.users[ownProps.uid]
-}))(ProfileInfo);
+export default connect((state, ownProps) => {
+  const uid = ownProps.navigation.getParam('uid', state.currentUser.uid);
+  return {
+    userInfo: state.users[uid],
+    currentUser: state.currentUser,
+    uid
+  };
+})(ProfileInfo);

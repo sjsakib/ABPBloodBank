@@ -67,7 +67,6 @@ class EditProfile extends React.Component {
 
     phone = phone ? phone.trim() : '';
     if (!phone.match(/^(\+88)?01\d{9}$/)) {
-      console.log(phone);
       this.phone.shake();
       valid = false;
       this.setState({ phoneValid: false });
@@ -84,6 +83,7 @@ class EditProfile extends React.Component {
       userRef = firebase.database().ref('/users/' + this.props.uid);
     }
     this.setState({ saving: true });
+    console.log('about to save.................')
     await userRef.set({
       name,
       phone,
@@ -94,7 +94,8 @@ class EditProfile extends React.Component {
       lastDonation,
       admin: this.props.admin
     });
-    this.props.navigation.navigate('ProfileInfo');
+    console.log('savvinggggggggggg..............')
+    this.props.navigation.navigate('ProfileInfo', { uid: this.props.uid });
   }
 
   async selectDate() {
@@ -226,6 +227,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect((state, ownProps) => state.users[ownProps.uid])(
-  EditProfile
-);
+export default connect((state, ownProps) => {
+  const uid = ownProps.navigation.getParam('uid', state.currentUser.uid);
+  return { ...state.users[uid], uid };
+})(EditProfile);
