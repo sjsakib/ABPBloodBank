@@ -31,10 +31,11 @@ const List = props => {
       <SearchBar
         lightTheme
         clearIcon={{ name: 'close' }}
-        noIcon
+        inputStyle={{fontSize: 14}}
+        containerStyle={{backgroundColor: 'white', borderTopColor: 'white', borderBottomColor: 'white',}}
         onChangeText={props.updateKeyword}
-        onClearText={props.updateKeyword}
-        placeholder="Type name or address..."
+        onClearText={() => props.updateKeyword('')}
+        placeholder="Type name or address to search"
       />
       <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10, justifyContent: 'space-between' }}>
         <Text style={{fontSize: 18, color: '#43484d'}}>For: </Text>
