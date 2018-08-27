@@ -7,7 +7,7 @@ import {
   Picker,
   DatePickerAndroid,
   Modal,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import {
@@ -42,7 +42,8 @@ class EditProfile extends React.Component {
       address,
       lastDonation,
       nameValid: true,
-      phoneValid: true
+      phoneValid: true,
+      groupValid: true,
     };
   }
 
@@ -58,7 +59,7 @@ class EditProfile extends React.Component {
     } = this.state;
     let valid = true;
 
-    name = name.trim();
+    name = name && name.trim();
     if (!name) {
       this.name.shake();
       valid = false;
@@ -71,14 +72,20 @@ class EditProfile extends React.Component {
       valid = false;
       this.setState({ phoneValid: false });
     }
+    if (!group || group === 'none') {
+      valid = false;
+      this.setState({groupValid: false});
+    }
     if (!valid) return;
 
     fbUsername = fbUsername ? fbUsername.trim().split('/') : [''];
     fbUsername = fbUsername[fbUsername.length - 1];
 
+    const uid = this.props.uid;
+
     let userRef;
-    if (this.props.add) {
-      userRef = firebase.database.ref('/users').push();
+    if (uid === 'NEW') {
+      userRef = firebase.database().ref('/users').push();
     } else {
       userRef = firebase.database().ref('/users/' + this.props.uid);
     }
@@ -93,7 +100,9 @@ class EditProfile extends React.Component {
       lastDonation,
       admin: this.props.admin
     });
-    this.props.navigation.navigate('ProfileInfo', { uid: this.props.uid });
+    this.props.navigation.navigate(uid === 'NEW' ? 'List' : 'ProfileInfo', {
+      uid: this.props.uid
+    });
   }
 
   async selectDate() {
@@ -135,7 +144,7 @@ class EditProfile extends React.Component {
             <FormInput
               underlineColorAndroid={this.state.nameValid ? 'grey' : 'red'}
               ref={ref => (this.name = ref)}
-              defaultValue={this.state.name}
+              defaultValue={this.state.name || ''}
               placeholder="Type name..."
               onChangeText={text =>
                 this.setState({ name: text, nameValid: true })
@@ -146,16 +155,19 @@ class EditProfile extends React.Component {
             <FormLabel>Blood Group </FormLabel>
             <Picker
               underlineColorAndroid="grey"
-              style={{ marginLeft: 10, color: '#000' }}
-              selectedValue={this.state.group}
+              style={{ marginLeft: 10, color: this.state.groupValid ? 'gray' : 'red' }}
+              selectedValue={this.state.group || 'none'}
               mode="dropdown"
-              onValueChange={group => this.setState({ group })}>
+              onValueChange={group => this.setState({ group, groupValid: true })}>
+              <Picker.Item label="none" value="none" />
               <Picker.Item label="A+" value="A+" />
               <Picker.Item label="A-" value="A-" />
               <Picker.Item label="B+" value="B+" />
               <Picker.Item label="B-" value="B-" />
               <Picker.Item label="O+" value="O+" />
               <Picker.Item label="O-" value="O-" />
+              <Picker.Item label="AB+" value="AB+" />
+              <Picker.Item label="AB-" value="AB-" />
             </Picker>
           </View>
         </View>
@@ -173,7 +185,7 @@ class EditProfile extends React.Component {
         <FormLabel>Facebook Profile</FormLabel>
         <FormInput
           underlineColorAndroid="grey"
-          defaultValue={this.state.fbUsername}
+          defaultValue={this.state.fbUsername || ''}
           placeholder="Facebook username or profile link"
           onChangeText={text => this.setState({ fbUsername: text })}
         />
@@ -191,7 +203,7 @@ class EditProfile extends React.Component {
           defaultValue={
             this.state.lastDonation
               ? dateString(new Date(this.state.lastDonation))
-              : 'NO RECORD'
+              : 'NO RECORD!'
           }
           onFocus={() => this.selectDate()}
         />
@@ -200,7 +212,12 @@ class EditProfile extends React.Component {
           visible={this.state.saving === true}
           onRequestClose={() => console.log('trying to close')}>
           <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, .5)'}}>
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(255, 255, 255, .5)'
+            }}>
             <ActivityIndicator size="large" />
           </View>
         </Modal>

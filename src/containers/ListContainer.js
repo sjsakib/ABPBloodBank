@@ -40,7 +40,8 @@ const mapStateToProps = state => {
 
   return {
     users,
-    filters: state.filters
+    filters: state.filters,
+    actionButton: state.currentUser.admin,
   };
 };
 

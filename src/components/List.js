@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, Picker, TextInput } from 'react-native';
 import { ListItem, SearchBar, Divider } from 'react-native-elements';
+import ActionButton from 'react-native-action-button';
 import dateString from '../utilities/dateString';
 
 const renderItem = ({ item }) => {
@@ -31,14 +32,24 @@ const List = props => {
       <SearchBar
         lightTheme
         clearIcon={{ name: 'close' }}
-        inputStyle={{fontSize: 14}}
-        containerStyle={{backgroundColor: 'white', borderTopColor: 'white', borderBottomColor: 'white',}}
+        inputStyle={{ fontSize: 14 }}
+        containerStyle={{
+          backgroundColor: 'white',
+          borderTopColor: 'white',
+          borderBottomColor: 'white'
+        }}
         onChangeText={props.updateKeyword}
         onClearText={() => props.updateKeyword('')}
         placeholder="Type name or address to search"
       />
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10, justifyContent: 'space-between' }}>
-        <Text style={{fontSize: 18, color: '#43484d'}}>For: </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginLeft: 10,
+          justifyContent: 'space-between'
+        }}>
+        <Text style={{ fontSize: 18, color: '#43484d' }}>For: </Text>
         <Picker
           selectedValue={props.filters.group}
           style={{ width: 150 }}
@@ -54,7 +65,7 @@ const List = props => {
           <Picker.Item label="AB+" value="AB+" />
           <Picker.Item label="AB-" value="AB-" />
         </Picker>
-        <Text style={{fontSize: 18, color: '#43484d'}}>Who: </Text>
+        <Text style={{ fontSize: 18, color: '#43484d' }}>Who: </Text>
         <Picker
           selectedValue={props.filters.available}
           style={{ width: 150 }}
@@ -87,11 +98,23 @@ const List = props => {
                   uri: `https://graph.facebook.com/${item.fbId}/picture`
                 }
               }
-              onPress={() => props.navigation.navigate('ProfileInfo', { uid: item.uid})}
+              onPress={() =>
+                props.navigation.navigate('ProfileInfo', { uid: item.uid })
+              }
             />
           );
         }}
       />
+      {props.actionButton && (
+        <ActionButton
+          hideShadow={false}
+          buttonColor="#FF9800"
+          nativeFeedbackRippleColor="rgba(255,255,255,0.40)"
+          onPress={() =>
+            props.navigation.navigate('EditProfile', { uid: 'NEW' })
+          }
+        />
+      )}
     </View>
   );
 };
