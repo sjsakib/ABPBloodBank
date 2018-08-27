@@ -36,27 +36,31 @@ const List = props => {
         onClearText={props.updateKeyword}
         placeholder="Type name or address..."
       />
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10, justifyContent: 'space-between' }}>
+        <Text style={{fontSize: 18, color: '#43484d'}}>For: </Text>
         <Picker
           selectedValue={props.filters.group}
-          style={{ width: 200 }}
+          style={{ width: 150 }}
           mode="dropdown"
           onValueChange={group => props.updateGroup(group)}>
-          <Picker.Item label="All" value="ALL" />
+          <Picker.Item label="Any group" value="ALL" />
           <Picker.Item label="A+" value="A+" />
           <Picker.Item label="A-" value="A-" />
           <Picker.Item label="B+" value="B+" />
           <Picker.Item label="B-" value="B-" />
           <Picker.Item label="O+" value="O+" />
           <Picker.Item label="O-" value="O-" />
+          <Picker.Item label="AB+" value="AB+" />
+          <Picker.Item label="AB-" value="AB-" />
         </Picker>
+        <Text style={{fontSize: 18, color: '#43484d'}}>Who: </Text>
         <Picker
           selectedValue={props.filters.available}
-          style={{ width: 200 }}
+          style={{ width: 150 }}
           mode="dropdown"
           onValueChange={available => props.updateAvailable(available)}>
-          <Picker.Item label="All" value="ALL" />
-          <Picker.Item label="Available" value="AVAILABLE" />
+          <Picker.Item label="Anyone" value="ALL" />
+          <Picker.Item label="Can donate" value="AVAILABLE" />
         </Picker>
       </View>
       <Divider />

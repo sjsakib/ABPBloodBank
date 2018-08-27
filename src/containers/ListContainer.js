@@ -2,6 +2,17 @@ import { connect } from 'react-redux';
 import { updateFilters } from '../actions';
 import List from '../components/List';
 
+const canDonate = {
+  'A+': ['A+', 'AB+'],
+  'A-': ['A-', 'A+', 'AB-', 'AB+'],
+  'B+': ['B+', 'AB+'],
+  'B-': ['B-', 'B+', 'AB-', 'AB+'],
+  'O+': ['O+', 'A+', 'B+', 'AB+'],
+  'O-': ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+  'AB+': ['AB+'],
+  'AB-': ['AB-', 'AB+']
+};
+
 const mapStateToProps = state => {
   let { available, group, keyword } = state.filters;
 
@@ -16,11 +27,13 @@ const mapStateToProps = state => {
       const user = state.users[uid];
       const address = user.address || '';
       return (
+        user.group &&
+        user.phone &&
         (available === 'ALL' || user.lastDonation < d) &&
         (keyword === '' ||
           (address.toLowerCase().includes(keyword) ||
             user.name.toLowerCase().includes(keyword))) &&
-        (group === 'ALL' || user.group === group)
+        (group === 'ALL' || canDonate[user.group].includes(group))
       );
     })
     .map(uid => ({ uid, ...state.users[uid] }));
