@@ -28,3 +28,5 @@ export const updateFilters = (key, val) => {
     val
   };
 };
+
+export const savingUser = () => ({ type: 'SAVING_USER' });

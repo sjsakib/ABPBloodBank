@@ -6,7 +6,7 @@ import LoginContainer from '../containers/LoginContainer';
 import ProfileInfo from '../components/ProfileInfo';
 import EditProfile from '../components/EditProfile';
 
-const Profile = ({ currentUser }) => {
+const Profile = ({ currentUser, editing }) => {
   if (!currentUser.uid) {
     return <LoginContainer />;
   }
@@ -19,9 +19,19 @@ const Profile = ({ currentUser }) => {
         screen: EditProfile
       }
     },
-    { headerMode: 'none' }
+    {
+      headerMode: 'none',
+      initialRouteName: editing ? 'EditProfile' : 'ProfileInfo'
+    }
   );
   return <ProfileNavigator />;
 };
 
-export default connect(state => ({ currentUser: state.currentUser }))(Profile);
+export default connect(state => {
+  const uid = state.currentUser.uid;
+  const user = state.users[uid];
+  return {
+    currentUser: state.currentUser,
+    editing: user && (!user.group || !user.phone)
+  };
+})(Profile);

@@ -20,6 +20,11 @@ export default (state = initialState, action) => {
         ...state,
         filters: { ...state.filters, [action.key]: action.val }
       };
+    case 'SAVING_USER':
+      return {
+        ...state,
+        savingUser: true
+      };
     default:
       return state;
   }

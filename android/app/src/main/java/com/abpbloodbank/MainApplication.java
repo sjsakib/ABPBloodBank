@@ -19,6 +19,7 @@ import java.util.List;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
+import com.google.firebase.database.FirebaseDatabase;
 
 // fbsdk
 import com.facebook.CallbackManager;
@@ -64,6 +65,7 @@ public class MainApplication extends Application implements ReactApplication {
 
   @Override
   public void onCreate() {
+    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
   }
