@@ -64,9 +64,9 @@ const List = props => {
               title={item.name}
               subtitle={[
                 item.group,
-                item.phone,
+                // item.phone,
                 item.lastDonation &&
-                  dateString(new Date(item.lastDonation), 'short')
+                  'Last donated - ' + dateString(new Date(item.lastDonation), 'short')
               ]
                 .filter(x => x)
                 .join('  |  ')}

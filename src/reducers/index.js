@@ -1,5 +1,6 @@
 const initialState = {
   ready: false,
+  admins: [],
   users: {},
   filters: { keyword: '', group: 'ALL', available: 'AVAILABLE' }
 };
@@ -11,8 +12,12 @@ export default (state = initialState, action) => {
     case 'UPDATE_CURRENT_USER':
       return { ...state, currentUser: action.currentUser };
     case 'UPDATE_USER_INFO':
+      const admins = state.admins.slice();
+      if (action.userInfo.admin && !admins.map(a => a.uid).includes(action.key))
+        admins.push({ uid: action.key, ...action.userInfo });
       return {
         ...state,
+        admins,
         users: { ...state.users, [action.key]: action.userInfo }
       };
     case 'UPDATE_FILTERS':

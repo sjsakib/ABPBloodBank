@@ -17,6 +17,11 @@ const ProfileInfo = props => {
     address
   } = props.userInfo;
   const navigation = props.navigation;
+  const hidden =
+    props.userInfo.hidden &&
+    props.currentUser.uid !== props.uid &&
+    !props.currentUser.admin;
+  const admins = props.admins;
   return (
     <ScrollView style={styles.container}>
       <View style={styles.top}>
@@ -41,16 +46,18 @@ const ProfileInfo = props => {
           <Icon raised color="#5e6977" name="drop" type="entypo" />
           <Text style={styles.rowText}>{group}</Text>
         </View>
-        <View style={styles.row}>
-          <Icon
-            raised
-            color="#5e6977"
-            name="phone"
-            type="entypo"
-            onPress={() => Linking.openURL(`tel:${phone}`)}
-          />
-          <Text style={styles.rowText}>{phone}</Text>
-        </View>
+        {!hidden && (
+          <View style={styles.row}>
+            <Icon
+              raised
+              color="#5e6977"
+              name="phone"
+              type="entypo"
+              onPress={() => Linking.openURL(`tel:${phone}`)}
+            />
+            <Text style={styles.rowText}>{phone}</Text>
+          </View>
+        )}
         <View style={styles.row}>
           <Icon raised color="#5e6977" name="calendar" type="entypo" />
           <Text style={styles.rowText}>
@@ -59,7 +66,7 @@ const ProfileInfo = props => {
               : 'No record!'}
           </Text>
         </View>
-        {address ? (
+        {address && !hidden ? (
           <View style={styles.row}>
             <Icon raised color="#5e6977" name="location" type="entypo" />
             <View style={styles.address}>
@@ -67,7 +74,7 @@ const ProfileInfo = props => {
             </View>
           </View>
         ) : null}
-        {fbUsername ? (
+        {fbUsername && !hidden ? (
           <View style={styles.fb}>
             <Icon
               raised
@@ -99,13 +106,43 @@ const ProfileInfo = props => {
           />
         </View>
       )}
-      {/*<Button
-        leftIcon={{ name: 'edit' }}
-        buttonStyle={styles.editButton}
-        rounded
-        title="EDIT"
-        onPress={() => navigation.navigate('EditProfile')}
-      />*/}
+      {hidden && (
+        <View styles={styles.hidden}>
+          <Text style={styles.hiddenInfo}>
+            এই রক্তদাতার কন্টাক্ট ইনফরমেশন গোপন করা রয়েছে। দয়া করে যেকোন একজন
+            এডমিনের সাথে যোগাযোগ করুন।
+          </Text>
+          {admins.map(admin => (
+            <View style={styles.row} key={admin.uid}>
+              {admin.fbUsername && (
+                <Icon
+                  onPress={() =>
+                    Linking.openURL(`https://m.me/${admin.fbUsername}`)
+                  }
+                  name="facebook-messenger"
+                  type="material-community"
+                  raised
+                  color="#5e6977"
+                />
+              )}
+              <Icon
+                name="phone"
+                type="material-community"
+                raised
+                color="#5e6977"
+                onPress={() => Linking.openURL(`tel:${admin.phone}`)}
+              />
+              <Text
+                onPress={() =>
+                  navigation.navigate('ProfileInfo', { uid: admin.uid })
+                }
+                style={styles.rowText}>
+                {admin.name}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
     </ScrollView>
   );
 };
@@ -133,7 +170,7 @@ const styles = StyleSheet.create({
     color: '#43484d'
   },
   bottom: {
-    marginTop: 30
+    marginTop: 20
   },
   row: {
     flexDirection: 'row',
@@ -144,7 +181,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     fontSize: 20,
     marginLeft: 20,
-    color: '#5e6977',
+    color: '#5e6977'
   },
   address: {
     flex: 1,
@@ -159,6 +196,11 @@ const styles = StyleSheet.create({
     // backgroundColor: 'hsl(200, 18%, 62%)',
     // width: 100,
     alignSelf: 'center'
+  },
+  hiddenInfo: {
+    marginBottom: 10,
+    marginTop: 20,
+    color: '#5e6977'
   }
 });
 
@@ -167,6 +209,7 @@ export default connect((state, ownProps) => {
   return {
     userInfo: state.users[uid],
     currentUser: state.currentUser,
+    admins: state.admins,
     uid
   };
 })(ProfileInfo);

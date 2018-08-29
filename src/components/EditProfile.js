@@ -17,7 +17,8 @@ import {
   Button,
   Icon,
   FormValidationMessage,
-  Header
+  Header,
+  CheckBox
 } from 'react-native-elements';
 import dateString from '../utilities/dateString';
 
@@ -31,7 +32,8 @@ class EditProfile extends React.Component {
       fbId,
       fbUsername,
       address,
-      lastDonation
+      lastDonation,
+      hidden
     } = props;
     this.state = {
       name,
@@ -41,9 +43,10 @@ class EditProfile extends React.Component {
       fbUsername,
       address,
       lastDonation,
+      hidden,
       nameValid: true,
       phoneValid: true,
-      groupValid: true,
+      groupValid: true
     };
   }
 
@@ -55,7 +58,8 @@ class EditProfile extends React.Component {
       fbId,
       fbUsername,
       address,
-      lastDonation
+      lastDonation,
+      hidden
     } = this.state;
     let valid = true;
 
@@ -74,7 +78,7 @@ class EditProfile extends React.Component {
     }
     if (!group || group === 'none') {
       valid = false;
-      this.setState({groupValid: false});
+      this.setState({ groupValid: false });
     }
     if (!valid) return;
 
@@ -85,7 +89,10 @@ class EditProfile extends React.Component {
 
     let userRef;
     if (uid === 'NEW') {
-      userRef = firebase.database().ref('/users').push();
+      userRef = firebase
+        .database()
+        .ref('/users')
+        .push();
     } else {
       userRef = firebase.database().ref('/users/' + this.props.uid);
     }
@@ -98,6 +105,7 @@ class EditProfile extends React.Component {
       fbUsername,
       address,
       lastDonation,
+      hidden,
       admin: this.props.admin
     });
     this.props.navigation.navigate(uid === 'NEW' ? 'List' : 'ProfileInfo', {
@@ -155,10 +163,15 @@ class EditProfile extends React.Component {
             <FormLabel>Blood Group </FormLabel>
             <Picker
               underlineColorAndroid="grey"
-              style={{ marginLeft: 10, color: this.state.groupValid ? 'gray' : 'red' }}
+              style={{
+                marginLeft: 10,
+                color: this.state.groupValid ? 'gray' : 'red'
+              }}
               selectedValue={this.state.group || 'none'}
               mode="dropdown"
-              onValueChange={group => this.setState({ group, groupValid: true })}>
+              onValueChange={group =>
+                this.setState({ group, groupValid: true })
+              }>
               <Picker.Item label="none" value="none" />
               <Picker.Item label="A+" value="A+" />
               <Picker.Item label="A-" value="A-" />
@@ -206,6 +219,13 @@ class EditProfile extends React.Component {
               : 'NO RECORD!'
           }
           onFocus={() => this.selectDate()}
+        />
+        <CheckBox
+          title="Share contact information only with Admin"
+          checkedColor="#5e6977"
+          textStyle={{color: '#86939e'}}
+          checked={this.state.hidden}
+          onPress={() => this.setState({ hidden: !this.state.hidden })}
         />
         <Modal
           transparent={true}
