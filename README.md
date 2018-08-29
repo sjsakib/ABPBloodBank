@@ -1,6 +1,8 @@
 # ABPBloodBank
 A blood donor management app with react native and firebase. This app was developed to help [Asroy Bidyapith](https://www.facebook.com/Asroy.biddapith/) with their blood management activity in Ashuganj and nearby areas. Feel free to clone it for your own locality.
 
+The app is available [here.](https://play.google.com/store/apps/details?id=com.abpbloodbank)
+
 ## Features
 * Search donors with name or address
 * Filter with blood group and availability according to last donation date
