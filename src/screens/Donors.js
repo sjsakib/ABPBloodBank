@@ -1,10 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { View, Text } from 'react-native';
 import ListContainer from '../containers/ListContainer';
 import ProfileInfo from '../components/ProfileInfo';
 import EditProfile from '../components/EditProfile';
-import { Icon } from 'react-native-elements';
 
 const DonorsNavigator = createStackNavigator(
   {

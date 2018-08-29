@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { getReady, updateCurrentUser, updateUserInfo } from './actions';
 import Profile from './screens/Profile';
 import Donors from './screens/Donors';
+import About from './screens/About';
 import { Icon } from 'react-native-elements';
 
 // Create the main navigator
@@ -18,6 +19,9 @@ const MainNavigator = createMaterialBottomTabNavigator(
     },
     Profile: {
       screen: Profile
+    },
+    About: {
+      screen: About
     }
   },
   {
@@ -33,14 +37,12 @@ const MainNavigator = createMaterialBottomTabNavigator(
           iconName = 'water';
         } else if (routeName === 'Profile') {
           iconName = 'account';
+        } else if (routeName === 'About') {
+          iconName = 'account-group';
         }
 
         return (
-          <Icon
-            name={iconName}
-            color={tintColor}
-            type="material-community"
-          />
+          <Icon name={iconName} color={tintColor} type="material-community" />
         );
       }
     })
