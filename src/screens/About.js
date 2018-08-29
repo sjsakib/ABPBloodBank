@@ -6,7 +6,8 @@ class About extends React.Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>আমরা কারা? </Text>
+        <Text style={styles.title}>আশ্রয় বিদ্যাপীঠ</Text>
+        <Text style={styles.title2}>আমরা কারা? </Text>
         <Text style={styles.about}>
           আশ্রয় বিদ্যাপীঠ আশুগন্জ ভিত্তিক একটি অলাভজনক সংগঠন। বঞ্চিত শিশুদের
           শিক্ষাদানের উদ্দেশ্যে একটি স্কুল পরিচালনার পাশাপাশি আশ্রয় বিদ্যাপীঠ
@@ -15,7 +16,7 @@ class About extends React.Component {
           জনসাধারণকে রক্তদানে উৎসাহিত করা, জরুরী রক্তের প্রয়োজনে সদস্যদের মধ্য
           থেকে বা অন্য কোন ভাবে রক্তদাতা ম্যনেজ করা।
         </Text>
-        <Text style={styles.title}>যোগাযোগ</Text>
+        <Text style={styles.title2}>যোগাযোগ</Text>
         <View style={{ flexDirection: 'row' }}>
           <Icon
             onPress={() =>
@@ -37,7 +38,7 @@ class About extends React.Component {
           />
           <Icon
             onPress={() =>
-              Linking.openURL('tel://01754599134')
+              Linking.openURL('tel:01754599134')
             }
             reverse
             color="orange"
@@ -45,7 +46,7 @@ class About extends React.Component {
             type="material-community"
           />
         </View>
-        <Text style={[styles.about, { fontSize: 16 }]}>
+        <Text style={[styles.about, { fontSize: 16, marginTop: 40, marginBottom: 0 }]}>
           Application developed by sjsakib
           {'\n'}
           sjsakib.bd@gmail.com
@@ -74,10 +75,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
+    color: '#43484d',
+    marginBottom: 10,
+  },
+  title2: {
+    fontSize: 18,
     color: '#43484d'
   },
   about: {
     margin: 20,
+    marginTop: 0,
     textAlign: 'center',
     color: '#5e6977'
   }
