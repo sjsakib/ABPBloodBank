@@ -56,7 +56,7 @@ class About extends React.Component {
             type="github"
           />
           <SocialIcon
-            onPress={() => Linking.openURL('https://medium.com/sjsakib/')}
+            onPress={() => Linking.openURL('https://medium.com/@sjsakib/')}
             type="medium"
           />
         </View>
