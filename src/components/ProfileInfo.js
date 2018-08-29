@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, Text, Linking } from 'react-native';
+import { View, StyleSheet, Text, Linking, ScrollView } from 'react-native';
 import { Avatar, Button, Icon, Header } from 'react-native-elements';
 import dateString from '../utilities/dateString';
 import LoadingIndicator from './LoadingIndicator';
@@ -18,7 +18,7 @@ const ProfileInfo = props => {
   } = props.userInfo;
   const navigation = props.navigation;
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.top}>
         <View style={styles.topLeft}>
           {!isNaN(fbId) && (
@@ -106,7 +106,7 @@ const ProfileInfo = props => {
         title="EDIT"
         onPress={() => navigation.navigate('EditProfile')}
       />*/}
-    </View>
+    </ScrollView>
   );
 };
 

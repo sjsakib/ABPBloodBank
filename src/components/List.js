@@ -4,28 +4,6 @@ import { ListItem, SearchBar, Divider } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 import dateString from '../utilities/dateString';
 
-const renderItem = ({ item }) => {
-  return (
-    <ListItem
-      containerStyle={{ borderBottomColor: '#e1e8ee' }}
-      title={item.name}
-      subtitle={[
-        item.group,
-        item.phone,
-        item.lastDonation && dateString(new Date(item.lastDonation), 'short')
-      ]
-        .filter(x => x)
-        .join('  |  ')}
-      roundAvatar
-      avatar={
-        item.fbId && {
-          uri: `https://graph.facebook.com/${item.fbId}/picture`
-        }
-      }
-    />
-  );
-};
-
 const List = props => {
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>

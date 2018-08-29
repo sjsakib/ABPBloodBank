@@ -78,7 +78,7 @@ class EditProfile extends React.Component {
     }
     if (!valid) return;
 
-    fbUsername = fbUsername ? fbUsername.trim().split('/') : [''];
+    fbUsername = fbUsername ? fbUsername.trim().split(/[/?=]/) : [''];
     fbUsername = fbUsername[fbUsername.length - 1];
 
     const uid = this.props.uid;
@@ -117,7 +117,7 @@ class EditProfile extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Header
           innerContainerStyles={{ alignItems: 'center' }}
           backgroundColor="white"
@@ -221,7 +221,7 @@ class EditProfile extends React.Component {
             <ActivityIndicator size="large" />
           </View>
         </Modal>
-      </View>
+      </ScrollView>
     );
   }
 }
