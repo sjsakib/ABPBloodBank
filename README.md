@@ -17,3 +17,25 @@ The app is available [here.](https://play.google.com/store/apps/details?id=com.a
 * React Native Elements
 * React Navigation
 * Redux
+
+### Firebase security rule
+Here's the firebase security rule in case you need it to clone the project
+```json
+{
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    "contact_info": {
+      "$uid": {
+        ".read": "data.child('hidden').val() != true || $uid === auth.uid || root.child('users').child(auth.uid).child('admin').val() == true",
+        ".write": "data.child('hidden').val() != true || $uid === auth.uid || root.child('users').child(auth.uid).child('admin').val() == true"
+      }
+    },
+    "users": {
+      ".read": true,
+      "$uid": {
+        ".write": "$uid === auth.uid || root.child('users').child(auth.uid).child('admin').val() == true"
+      }
+    }
+  }
+}
+```
