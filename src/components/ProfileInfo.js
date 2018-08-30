@@ -46,18 +46,19 @@ const ProfileInfo = props => {
           <Icon raised color="#5e6977" name="drop" type="entypo" />
           <Text style={styles.rowText}>{group}</Text>
         </View>
-        {!hidden && (
-          <View style={styles.row}>
-            <Icon
-              raised
-              color="#5e6977"
-              name="phone"
-              type="entypo"
-              onPress={() => Linking.openURL(`tel:${phone}`)}
-            />
-            <Text style={styles.rowText}>{phone}</Text>
-          </View>
-        )}
+        {!hidden &&
+          phone && (
+            <View style={styles.row}>
+              <Icon
+                raised
+                color="#5e6977"
+                name="phone"
+                type="entypo"
+                onPress={() => Linking.openURL(`tel:${phone}`)}
+              />
+              <Text style={styles.rowText}>{phone}</Text>
+            </View>
+          )}
         <View style={styles.row}>
           <Icon raised color="#5e6977" name="calendar" type="entypo" />
           <Text style={styles.rowText}>
@@ -109,8 +110,8 @@ const ProfileInfo = props => {
       {hidden && (
         <View styles={styles.hidden}>
           <Text style={styles.hiddenInfo}>
-            এই রক্তদাতার কন্টাক্ট ইনফরমেশন গোপন করা রয়েছে। দয়া করে যেকোন একজন
-            এডমিনের সাথে যোগাযোগ করুন।
+            এই রক্তদাতার সাথে যোগাযোগ করতে দয়া করে যেকোন একজন এডমিনের সাথে
+            যোগাযোগ করুন।
           </Text>
           {admins.map(admin => (
             <View style={styles.row} key={admin.uid}>
@@ -209,7 +210,7 @@ export default connect((state, ownProps) => {
   return {
     userInfo: state.users[uid],
     currentUser: state.currentUser,
-    admins: state.admins,
+    admins: state.admins.map(uid => ({uid, ...state.users[uid]})),
     uid
   };
 })(ProfileInfo);

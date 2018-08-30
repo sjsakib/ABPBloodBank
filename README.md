@@ -22,7 +22,6 @@ The app is available [here.](https://play.google.com/store/apps/details?id=com.a
 Here's the firebase security rule in case you need it to clone the project
 ```json
 {
-  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
     "contact_info": {
       "$uid": {

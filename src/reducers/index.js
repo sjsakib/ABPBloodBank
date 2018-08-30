@@ -13,12 +13,15 @@ export default (state = initialState, action) => {
       return { ...state, currentUser: action.currentUser };
     case 'UPDATE_USER_INFO':
       const admins = state.admins.slice();
-      if (action.userInfo.admin && !admins.map(a => a.uid).includes(action.key))
-        admins.push({ uid: action.key, ...action.userInfo });
+      if (action.userInfo.admin && !admins.includes(action.key))
+        admins.push(action.key);
       return {
         ...state,
         admins,
-        users: { ...state.users, [action.key]: action.userInfo }
+        users: {
+          ...state.users,
+          [action.key]: { ...state.users[action.key], ...action.userInfo }
+        }
       };
     case 'UPDATE_FILTERS':
       return {

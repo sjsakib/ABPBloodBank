@@ -70,6 +70,15 @@ class App extends React.Component {
     usersRef.on('child_added', data => {
       const info = data.val();
       dispatch(updateUserInfo(data.key, info));
+
+      // listen for contact info, it has to be separate for security
+      const contactRef = firebase.database().ref('/contact_info/' + data.key);
+      contactRef.on('value', data => {
+        const info = data.val();
+        if(info) dispatch(updateUserInfo(data.key, info));
+      });
+
+      // update current user in case they are promoted or demoted
       if (data.key === currentUser.uid) {
         dispatch(updateCurrentUser({ uid: data.key, admin: info.admin }));
       }

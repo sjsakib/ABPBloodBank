@@ -85,30 +85,35 @@ class EditProfile extends React.Component {
     fbUsername = fbUsername ? fbUsername.trim().split(/[/?=]/) : [''];
     fbUsername = fbUsername[fbUsername.length - 1];
 
-    const uid = this.props.uid;
+    let uid = this.props.uid;
 
-    let userRef;
     if (uid === 'NEW') {
-      userRef = firebase
+      uid = firebase
         .database()
         .ref('/users')
-        .push();
-    } else {
-      userRef = firebase.database().ref('/users/' + this.props.uid);
+        .push().key;
     }
-    this.setState({ saving: true });
-    await userRef.set({
+    const updates = {};
+    updates['/users/' + uid] = {
       name,
-      phone,
       group,
       fbId,
+      lastDonation,
+      admin: this.props.admin
+    };
+    updates['/contact_info/' + uid] = {
+      phone,
       fbUsername,
       address,
-      lastDonation,
-      hidden,
-      admin: this.props.admin
-    });
-    this.props.navigation.navigate(uid === 'NEW' ? 'List' : 'ProfileInfo', {
+      hidden
+    };
+    this.setState({ saving: true });
+    await firebase
+      .database()
+      .ref()
+      .update(updates);
+
+    this.props.navigation.navigate(this.props.uid === 'NEW' ? 'List' : 'ProfileInfo', {
       uid: this.props.uid
     });
   }
@@ -223,7 +228,7 @@ class EditProfile extends React.Component {
         <CheckBox
           title="Share contact information only with Admin"
           checkedColor="#5e6977"
-          textStyle={{color: '#86939e'}}
+          textStyle={{ color: '#86939e' }}
           checked={this.state.hidden}
           onPress={() => this.setState({ hidden: !this.state.hidden })}
         />
