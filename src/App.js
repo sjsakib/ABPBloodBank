@@ -53,7 +53,11 @@ const MainNavigator = createMaterialBottomTabNavigator(
 class App extends React.Component {
   componentDidMount() {
     this.load();
-    // this.authenticate();
+    this.manageNotification();
+  }
+
+  componentWillUnmount() {
+    this.notificationListener();
   }
 
   async load() {
@@ -75,7 +79,7 @@ class App extends React.Component {
       const contactRef = firebase.database().ref('/contact_info/' + data.key);
       contactRef.on('value', data => {
         const info = data.val();
-        if(info) dispatch(updateUserInfo(data.key, info));
+        if (info) dispatch(updateUserInfo(data.key, info));
       });
 
       // update current user in case they are promoted or demoted
@@ -91,11 +95,27 @@ class App extends React.Component {
         dispatch(updateCurrentUser({ uid: data.key, admin: info.admin }));
       }
     });
+  }
 
-    // if user signed in, refresh authentication
-    /*if (currentUser.uid) {
-      // const
-    }*/
+  async manageNotification() {
+    await firebase.messaging().requestPermission();
+    
+    // create a channel
+    const channel = new firebase.notifications.Android.Channel(
+      'latest-news',
+      'Latest News',
+      firebase.notifications.Android.Importance.Max
+    ).setDescription('Latest news about activities of Asroy Bidyapith');
+    firebase.notifications().android.createChannel(channel);
+
+
+    this.notificationListener = firebase
+      .notifications()
+      .onNotification(notification => {
+        notification.android.setChannelId(notification.data.channel);
+        notification.android.setBigPicture(notification.data.picture);
+        firebase.notifications().displayNotification(notification);
+      });
   }
 
   async authenticate() {

@@ -17,9 +17,11 @@ import java.util.List;
 
 // firebase
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
-import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 import com.google.firebase.database.FirebaseDatabase;
+
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 
 // fbsdk
 import com.facebook.CallbackManager;
@@ -47,6 +49,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFirebasePackage(),
             new RNFirebaseAuthPackage(),
             new RNFirebaseDatabasePackage(),
+            new RNFirebaseMessagingPackage(),
+            new RNFirebaseNotificationsPackage(),
             new FBSDKPackage(mCallbackManager),
             new VectorIconsPackage()
       );
