@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ActivityIndicator, AsyncStorage, StatusBar } from 'react-native';
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator, NavigationActions } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import firebase from 'react-native-firebase';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
@@ -57,10 +57,31 @@ class App extends React.Component {
     this.manageNotification();
   }
 
+  async componentDidUpdate() {
+    // check if the app was launched by opening notification
+    const notificationOpen = await firebase
+      .notifications()
+      .getInitialNotification();
+    if (notificationOpen) {
+      this.navigate('About', { data: notificationOpen.notification.data });
+    }
+  }
+
+  navigate(routeName, params) {
+    if (!this.navigator) return;
+    this.navigator.dispatch(
+      NavigationActions.navigate({
+        routeName: 'About',
+        params
+      })
+    );
+  }
+
   componentWillUnmount() {
     // clear listeners when app closes
     this.notificationListener();
     this.messageListener();
+    this.notificationOpenedListener();
   }
 
   async load() {
@@ -123,7 +144,15 @@ class App extends React.Component {
         firebase.notifications().displayNotification(notification);
       });
 
+    // listen for fcm
     this.messageListener = firebase.messaging().onMessage(bgMessaging);
+
+    // Listen for opened notification
+    this.notificationOpenedListener = firebase
+      .notifications()
+      .onNotificationOpened(notificationOpen => {
+        this.navigate('About', { data: notificationOpen.notification.data });
+      });
   }
 
   async authenticate() {
@@ -149,7 +178,7 @@ class App extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
-        <MainNavigator />
+        <MainNavigator ref={navigatorRef => (this.navigator = navigatorRef)} />
       </View>
     );
   }
