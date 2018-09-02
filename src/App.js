@@ -9,6 +9,7 @@ import { getReady, updateCurrentUser, updateUserInfo } from './actions';
 import Profile from './screens/Profile';
 import Donors from './screens/Donors';
 import About from './screens/About';
+import bgMessaging from './utilities/bgMessaging';
 import { Icon } from 'react-native-elements';
 
 // Create the main navigator
@@ -57,7 +58,9 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
+    // clear listeners when app closes
     this.notificationListener();
+    this.messageListener();
   }
 
   async load() {
@@ -99,7 +102,7 @@ class App extends React.Component {
 
   async manageNotification() {
     await firebase.messaging().requestPermission();
-    
+
     // create a channel
     const channel = new firebase.notifications.Android.Channel(
       'latest-news',
@@ -108,7 +111,10 @@ class App extends React.Component {
     ).setDescription('Latest news about activities of Asroy Bidyapith');
     firebase.notifications().android.createChannel(channel);
 
+    //subscribe to news topic
+    firebase.messaging().subscribeToTopic('latest-news');
 
+    // show notification if app in foreground
     this.notificationListener = firebase
       .notifications()
       .onNotification(notification => {
@@ -116,6 +122,8 @@ class App extends React.Component {
         notification.android.setBigPicture(notification.data.picture);
         firebase.notifications().displayNotification(notification);
       });
+
+    this.messageListener = firebase.messaging().onMessage(bgMessaging);
   }
 
   async authenticate() {
