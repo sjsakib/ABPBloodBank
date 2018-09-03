@@ -1,9 +1,12 @@
 import React from 'react';
 import { Text, View, StyleSheet, Linking, ScrollView } from 'react-native';
 import { SocialIcon, Icon } from 'react-native-elements';
+import News from '../components/News';
 
 class About extends React.Component {
   render() {
+    const data = this.props.navigation.getParam('data', null);
+    if (data) return <News data={data} />;
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>আশ্রয় বিদ্যাপীঠ</Text>
@@ -28,25 +31,25 @@ class About extends React.Component {
             type="material-community"
           />
           <Icon
-            onPress={() =>
-              Linking.openURL('https://m.me/Asroy.biddapith/')
-            }
+            onPress={() => Linking.openURL('https://m.me/Asroy.biddapith/')}
             reverse
             color="#0084ff"
             name="facebook-messenger"
             type="material-community"
           />
           <Icon
-            onPress={() =>
-              Linking.openURL('tel:01754599134')
-            }
+            onPress={() => Linking.openURL('tel:01754599134')}
             reverse
             color="orange"
             name="phone"
             type="material-community"
           />
         </View>
-        <Text style={[styles.about, { fontSize: 16, marginTop: 40, marginBottom: 0 }]}>
+        <Text
+          style={[
+            styles.about,
+            { fontSize: 16, marginTop: 40, marginBottom: 0 }
+          ]}>
           Application developed by sjsakib
           {'\n'}
           sjsakib.bd@gmail.com
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     color: '#43484d',
-    marginBottom: 10,
+    marginBottom: 10
   },
   title2: {
     fontSize: 18,

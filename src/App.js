@@ -62,6 +62,14 @@ class App extends React.Component {
     const notificationOpen = await firebase
       .notifications()
       .getInitialNotification();
+    if (!notificationOpen) return;
+
+    const data = notificationOpen.notification.data;
+    const notification = notificationOpen.notification;
+
+    if (!data.title) data.title = notification.title;
+    if (!data.message) data.message = notification.body;
+
     if (notificationOpen) {
       this.navigate('About', { data: notificationOpen.notification.data });
     }

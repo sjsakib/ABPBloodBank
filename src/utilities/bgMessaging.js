@@ -8,7 +8,9 @@ export default async message => {
     .setBody(data.message)
     .setData(data)
     .android.setChannelId(data.channelId)
-    .android.setBigPicture(data.picture);
+    .android.setLargeIcon('ic_launcher')
+    .android.setBigPicture(data.picture, 'ic_launcher')
+    .android.setAutoCancel(true);
 
   firebase.notifications().displayNotification(notification);
 
