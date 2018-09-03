@@ -7,7 +7,8 @@ import {
   Picker,
   DatePickerAndroid,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  TextInput
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import {
@@ -38,7 +39,7 @@ class EditProfile extends React.Component {
     this.state = {
       name,
       group,
-      phone,
+      phone: phone || '01',
       fbId,
       fbUsername,
       address,
@@ -113,9 +114,12 @@ class EditProfile extends React.Component {
       .ref()
       .update(updates);
 
-    this.props.navigation.navigate(this.props.uid === 'NEW' ? 'List' : 'ProfileInfo', {
-      uid: this.props.uid
-    });
+    this.props.navigation.navigate(
+      this.props.uid === 'NEW' ? 'List' : 'ProfileInfo',
+      {
+        uid: this.props.uid
+      }
+    );
   }
 
   async selectDate() {
@@ -194,14 +198,15 @@ class EditProfile extends React.Component {
           ref={ref => (this.phone = ref)}
           underlineColorAndroid={this.state.phoneValid ? 'grey' : 'red'}
           keyboardType="number-pad"
-          defaultValue={this.state.phone || '01'}
+          defaultValue={this.state.phone}
           placeholder="Phone"
           onChangeText={text =>
             this.setState({ phone: text, phoneValid: true })
           }
         />
         <FormLabel>Facebook Profile</FormLabel>
-        <FormInput
+        <TextInput
+          style={{marginLeft: 15, marginRight: 15, color: '#86939e', fontSize: 18}}
           underlineColorAndroid="grey"
           defaultValue={this.state.fbUsername || ''}
           placeholder="Facebook username or profile link"
