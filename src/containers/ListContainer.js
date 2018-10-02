@@ -28,7 +28,6 @@ const mapStateToProps = state => {
       const address = user.address || '';
       return (
         user.group &&
-        user.phone &&
         (available === 'ALL' || user.lastDonation < d) &&
         (keyword === '' ||
           (address.toLowerCase().includes(keyword) ||
