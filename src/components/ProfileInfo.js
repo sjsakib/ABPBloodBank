@@ -113,35 +113,38 @@ const ProfileInfo = props => {
             এই রক্তদাতার সাথে যোগাযোগ করতে দয়া করে যেকোন একজন এডমিনের সাথে
             যোগাযোগ করুন।
           </Text>
-          {admins.map(admin => (
-            <View style={styles.row} key={admin.uid}>
-              {admin.fbUsername && (
+          {admins
+            .filter(a => a.adminContact)
+            .sort((a, b) => a.priority - b.priority)
+            .map(admin => (
+              <View style={styles.row} key={admin.uid}>
+                {admin.fbUsername && (
+                  <Icon
+                    onPress={() =>
+                      Linking.openURL(`https://m.me/${admin.fbUsername}`)
+                    }
+                    name="facebook-messenger"
+                    type="material-community"
+                    raised
+                    color="#5e6977"
+                  />
+                )}
                 <Icon
-                  onPress={() =>
-                    Linking.openURL(`https://m.me/${admin.fbUsername}`)
-                  }
-                  name="facebook-messenger"
+                  name="phone"
                   type="material-community"
                   raised
                   color="#5e6977"
+                  onPress={() => Linking.openURL(`tel:${admin.phone}`)}
                 />
-              )}
-              <Icon
-                name="phone"
-                type="material-community"
-                raised
-                color="#5e6977"
-                onPress={() => Linking.openURL(`tel:${admin.phone}`)}
-              />
-              <Text
-                onPress={() =>
-                  navigation.navigate('ProfileInfo', { uid: admin.uid })
-                }
-                style={styles.rowText}>
-                {admin.name}
-              </Text>
-            </View>
-          ))}
+                <Text
+                  onPress={() =>
+                    navigation.navigate('ProfileInfo', { uid: admin.uid })
+                  }
+                  style={styles.rowText}>
+                  {admin.name}
+                </Text>
+              </View>
+            ))}
         </View>
       )}
     </ScrollView>
@@ -210,7 +213,7 @@ export default connect((state, ownProps) => {
   return {
     userInfo: state.users[uid],
     currentUser: state.currentUser,
-    admins: state.admins.map(uid => ({uid, ...state.users[uid]})),
+    admins: state.admins.map(uid => ({ uid, ...state.users[uid] })),
     uid
   };
 })(ProfileInfo);
