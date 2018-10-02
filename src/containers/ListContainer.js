@@ -31,6 +31,7 @@ const mapStateToProps = state => {
         (available === 'ALL' || user.lastDonation < d) &&
         (keyword === '' ||
           (address.toLowerCase().includes(keyword) ||
+            user.group.toLowerCase().includes(keyword) ||
             user.name.toLowerCase().includes(keyword))) &&
         (group === 'ALL' || canDonate[user.group].includes(group))
       );
