@@ -26,9 +26,9 @@ The app is available [here.](https://play.google.com/store/apps/details?id=com.a
 
 3. Create a firebase project [here.](https://firebase.google.com/console)
 
-4. A `google-services.json` file contains all of the information required by the Firebase Android SDK to connect to your Firebase project. To automatically generate the json file, follow [this guide](https://github.com/react-native-community/react-native-google-signin/blob/master/get-config-file.md) to generate the file. Once downloaded, place this file in the root of the project at `android/app/google-services.json`. Replace the existing file.
+4. A `google-services.json` file contains all of the information required by the Firebase Android SDK to connect to your Firebase project. To automatically generate the json file, follow [this guide](https://github.com/react-native-community/react-native-google-signin/blob/master/get-config-file.md). Once downloaded, place this file in the root of the project at `android/app/google-services.json`. Replace the existing file.
 
-5. Create a realtime database from firebase console with this following security rules.
+5. Create a realtime database from firebase console with these following security rules.
 
 ```json
 {
@@ -49,7 +49,7 @@ The app is available [here.](https://play.google.com/store/apps/details?id=com.a
 }
 ```
 
-6. Follow the [Getting Started Guide](https://developers.facebook.com/docs/android/getting-started/) for Facebook Android SDK to set up a Facebook app. You don't need to follow the whole guide, just the create a new facebook app, update the `strings.xml` and add the `Key Hash`
+6. Follow the [Getting Started Guide](https://developers.facebook.com/docs/android/getting-started/) for Facebook Android SDK to set up a Facebook app. You don't need to follow the whole guide, just create a new facebook app, update the `strings.xml` and add the `Key Hash`
 
 7. Install the dependencies with `yarn install`.
 
