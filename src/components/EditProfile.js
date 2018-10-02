@@ -100,6 +100,7 @@ class EditProfile extends React.Component {
       group,
       fbId,
       lastDonation,
+      hidden,
       admin: this.props.admin
     };
     updates['/contact_info/' + uid] = {
@@ -113,6 +114,7 @@ class EditProfile extends React.Component {
       .database()
       .ref()
       .update(updates);
+    this.setState({ saving: false });
 
     this.props.navigation.navigate(
       this.props.uid === 'NEW' ? 'List' : 'ProfileInfo',
